@@ -123,21 +123,26 @@ public class App {
 					rowMapData.put("MATX_ACC_TYPE", bucketDetail[1]);
 					rowMapData.put("FATX_ACC_TYPE", bucketDetail[1]);
 					rowMapData.put("ACAC_ACC_NO", bucketDetail[2]);
+					double dedAccumAppliedAmount = Double.valueOf(mapData.get("DedAccumulatorAppliedAmount"))
+							.doubleValue();
+					double oopAccumAppliedAmount = Double.valueOf(mapData.get("OopAccumulatorAppliedAmount"))
+							.doubleValue();
+					if (mapData.get("DedActionCode").equalsIgnoreCase("-")) {
+						dedAccumAppliedAmount = -Math.abs(dedAccumAppliedAmount);
+					}
+					if (mapData.get("OopActionCode").equalsIgnoreCase("-")) {
+						oopAccumAppliedAmount = -Math.abs(oopAccumAppliedAmount);
+					}
 					if (bucketDetail[1].equalsIgnoreCase("D")) {
-						rowMapData.put("ACCUM_AMOUNT", Double.valueOf(
-								Double.valueOf(mapData.get("DedAccumulatorAppliedAmount")).doubleValue() / 100.0D));
+						rowMapData.put("ACCUM_AMOUNT", Double.valueOf(dedAccumAppliedAmount / 100.0D));
 					} else if (bucketDetail[1].equalsIgnoreCase("L")) {
 						if (bucketDetail[3].equalsIgnoreCase("DEDLMT")) {
-							rowMapData.put("ACCUM_AMOUNT", Double.valueOf(
-									Double.valueOf(mapData.get("OopAccumulatorAppliedAmount")).doubleValue() / 100.0D));
+							rowMapData.put("ACCUM_AMOUNT", Double.valueOf(oopAccumAppliedAmount / 100.0D));
 						} else if (bucketDetail[3].equalsIgnoreCase("DED")) {
-							rowMapData.put("ACCUM_AMOUNT", Double.valueOf(
-									Double.valueOf(mapData.get("DedAccumulatorAppliedAmount")).doubleValue() / 100.0D));
+							rowMapData.put("ACCUM_AMOUNT", Double.valueOf(dedAccumAppliedAmount / 100.0D));
 						} else if (bucketDetail[3].equalsIgnoreCase("LMT")) {
-							rowMapData.put("ACCUM_AMOUNT", Double
-									.valueOf((Double.valueOf(mapData.get("OopAccumulatorAppliedAmount")).doubleValue()
-											- Double.valueOf(mapData.get("DedAccumulatorAppliedAmount")).doubleValue())
-											/ 100.0D));
+							rowMapData.put("ACCUM_AMOUNT",
+									Double.valueOf((oopAccumAppliedAmount - dedAccumAppliedAmount) / 100.0D));
 						}
 					}
 
